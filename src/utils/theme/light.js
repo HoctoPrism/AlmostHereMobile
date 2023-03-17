@@ -12,7 +12,7 @@ export const LightCustomTheme = {
     "colors": {
         ...MD3LightTheme.colors,
         ...LightTheme.colors,
-    "primary": "rgb(0, 99, 152)",
+    "primary": "#2C2D38",
     "onPrimary": "#2C2D38",
     "primaryContainer": "rgb(205, 229, 255)",
     "onPrimaryContainer": "rgb(0, 29, 50)",

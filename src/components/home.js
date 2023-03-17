@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.8,
     shadowRadius: 1,
-    elevation: 10,
+    elevation: 5,
   },
   buttonContent: {
     flexDirection: 'row',

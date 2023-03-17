@@ -12,7 +12,7 @@ export const DarkCustomTheme = {
  "colors": {
     ...MD3DarkTheme.colors,
     ...DarkTheme.colors,
-    "primary": "rgb(191, 194, 255)",
+    "primary": "#D6D6E7",
     "onPrimary": "#D6D6E7",
     "primaryContainer": "rgb(48, 55, 170)",
     "onPrimaryContainer": "rgb(224, 224, 255)",
