@@ -4,13 +4,14 @@ import axios from 'axios';
 import { useRef, useState } from 'react';
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import { MAPTILER_KEY, MAPTILER_MAP, BACK_ENDPOINT } from '@env';
-export default function Itineraire() {
+export default function Itineraire({ navigation }) {
 
   MapLibreGL.setAccessToken(null);
   MapLibreGL.setConnected(true);
 
   const [data, setData] = useState(null);
   const [stops, setStops] = useState(null);
+  const [routeBtns, setRouteBtns] = useState(null);
   const [loading, setLoading] = useState(true);
   const [startPoint, setStartPoint] = useState(undefined);
   const [destination, setDestinationPoint] = useState(undefined);
@@ -80,15 +81,22 @@ export default function Itineraire() {
           console.log('soucis de parse');
           return getResult(start, destination);
         } else {
-          let test = Object.entries(await res.data);
+          let datas = Object.entries(await res.data);
           let coordinates = [];
           let shapes = [];
           let arrayOfGeoJson = [];
+          let routeBtns = [];
 
           coordinates.push({'color': `#000`, 'text': 'départ', 'cood': [start.lon, start.lat]});
           coordinates.push({'color': `#000`, 'text': 'arrivé', 'cood': [destination.lon, destination.lat]});
 
-          test.map((item) => {
+          datas.map((item) => {
+            routeBtns.push({
+              "route_long_name": item[1].route_long_name,
+              "route_color": item[1].end_point.route_color,
+              "route_id": item[1].end_point.route_id,
+              "route_text_color": item[1].end_point.route_text_color
+            });
             shapes.push({
               "route_name": item[1].route_long_name,
               "color": `#${item[1].end_point.route_color}`,
@@ -124,6 +132,7 @@ export default function Itineraire() {
             type: "FeatureCollection",
             features: arrayOfGeoJson
           })
+          await setRouteBtns(routeBtns);
           setCities(undefined);
           setSearchItinary(false);
           setLoading(false);
@@ -219,6 +228,22 @@ export default function Itineraire() {
                 }
               </Pressable>
             </View>
+          <View style={styles.btnContainer}>
+            {routeBtns && routeBtns.map(({ route_long_name, route_color, route_id, route_text_color }) => {
+              return (
+                <Pressable
+                  key={route_long_name + route_id}
+                  style={{ backgroundColor: `#${route_color}`, ...styles.routeBtns }}
+                  onPress={() => navigation.navigate(
+                      'Route',
+                      { route_id, route_long_name, route_color, route_text_color }
+                  )}
+                >
+                  <Text style={{ color: `#${route_text_color}` }}>{route_long_name}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
         </View>
       </View>
       <View style={styles.mapContainer}>
@@ -255,7 +280,8 @@ export default function Itineraire() {
                     coordinate={cood}
                     draggable={false}
                   >
-                    <View style={{ borderColor: color, ...styles.pointAnnotation }}/>
+                    <View style={{ borderColor: color, ...styles.pointAnnotation }} />
+                    <MapLibreGL.Callout title={text} />
                   </MapLibreGL.PointAnnotation>
                 )})}
             </>
@@ -271,7 +297,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    height: 200,
+    height: 245,
   },
   input: {
     width: '90%',
@@ -310,6 +336,19 @@ const styles = StyleSheet.create({
     zIndex: 850,
     width: '100%',
     height: '100%',
+  },
+  btnContainer: {
+    marginTop: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+  },
+  routeBtns: {
+    padding: 10,
+    borderRadius: 5,
+    marginStart: 10,
   },
   mapContainer: {
     height: '100%',
