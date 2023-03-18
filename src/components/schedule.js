@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.8,
     shadowRadius: 1,
-    elevation: 10,
+    elevation: 1,
     width: '30%',
     display: 'flex',
     alignItems: 'flex-start',
