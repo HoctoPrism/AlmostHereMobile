@@ -142,7 +142,6 @@ export default function Itineraire({ navigation }) {
       }
     } catch (error) {
       console.log(error);
-      return getResult(start, destination);
     }
   };
 
