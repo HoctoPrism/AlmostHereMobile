@@ -24,7 +24,7 @@ const Schedule = ({ navigation }) => {
   }, []);
 
   return (
-    <ScrollView>
+    <ScrollView testID='schedule_page'>
       <StatusBar backgroundColor={colors.background} barStyle={theme} />
       <View style={{ margin: 20 }}>
         {loading ? (

@@ -10,7 +10,7 @@ export default function Home({ navigation }) {
   const theme = useColorScheme() === 'light' ? 'dark-content' : 'light-content';
 
   return (
-    <View style={{ margin: 20 }}>
+    <View style={{ margin: 20 }} testID='home_screen'>
 
       <StatusBar backgroundColor={colors.background} barStyle={theme} />
 
@@ -35,6 +35,7 @@ export default function Home({ navigation }) {
 
       <TouchableOpacity
         onPress={() => navigation.navigate('Schedule' )}
+        testID="schedule_button"
         style={{
           backgroundColor: colors.onSecondary,
           shadowColor: colors.shadow,
